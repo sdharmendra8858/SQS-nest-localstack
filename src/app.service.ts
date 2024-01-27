@@ -3,7 +3,6 @@ import { sqsService } from './utils';
 
 @Injectable()
 export class AppService {
-
   getHello(): string {
     return 'Hello World!';
   }
@@ -12,7 +11,7 @@ export class AppService {
     return sqsService.listQueue();
   }
 
-  createQueue(queueData: {queueName: string, fifoQueue?: boolean}) {
+  createQueue(queueData: { queueName: string; fifoQueue?: boolean }) {
     return sqsService.createQueue(queueData.queueName, queueData.fifoQueue);
   }
 
@@ -20,15 +19,24 @@ export class AppService {
     return sqsService.deleteQueue(queueUrl);
   }
 
-  publishMessage(queueUrl:string, msgGroupId: string, messageData: {message: string, attributes?:Record<string, any>}) {
-    return sqsService.publishMessage(queueUrl, msgGroupId, messageData.message, messageData.attributes)
+  publishMessage(
+    queueUrl: string,
+    msgGroupId: string,
+    messageData: { message: string; attributes?: Record<string, any> },
+  ) {
+    return sqsService.publishMessage(
+      queueUrl,
+      msgGroupId,
+      messageData.message,
+      messageData.attributes,
+    );
   }
 
   receiveMessage(queueUrl: string) {
     return sqsService.receiveMessage(queueUrl);
   }
 
-  deleteMessage(queueUrl: string, receiptHandler: string){
-    return sqsService.deleteMessage(queueUrl, receiptHandler)
+  deleteMessage(queueUrl: string, receiptHandler: string) {
+    return sqsService.deleteMessage(queueUrl, receiptHandler);
   }
 }
