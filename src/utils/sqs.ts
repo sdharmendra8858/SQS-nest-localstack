@@ -52,8 +52,8 @@ class SqsService {
       console.log(`Creating the queue with : ${queueName}`);
       const attributes = {};
       if (fifoQueue) {
-        (attributes['FifoQueue'] = 'true'),
-          (attributes['ContentBasedDeduplication'] = 'true');
+        attributes['FifoQueue'] = 'true';
+        attributes['ContentBasedDeduplication'] = 'true';
       }
       const input: CreateQueueCommandInput = {
         QueueName: `${queueName}${fifoQueue ? '.fifo' : ''}`,
