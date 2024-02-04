@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AwsV3SqsController } from './modules/aws-v3/aws-v3-sqs.controller';
-import { AwsV3SqsService } from './modules/aws-v3/aws-v3-sqs.service';
+import { AwsV2SqsModule } from './modules/aws-v2/aws-v2-sqs.module';
+import { AwsV3SqsModule } from './modules/aws-v3/aws-v3-sqs.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController, AwsV3SqsController],
-  providers: [AppService, AwsV3SqsService],
+  imports: [AwsV2SqsModule, AwsV3SqsModule],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

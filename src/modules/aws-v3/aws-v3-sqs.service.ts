@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
 
-import { sqsService } from 'src/utils';
+import { sqsV3Service } from 'src/utils';
 
 @Injectable()
 export class AwsV3SqsService {
-  getHello(): string {
-    return 'Hello World!';
+  getAwsSdkVersion(): string {
+    return 'Aws SDK version v3';
   }
 
   getQueueList() {
-    return sqsService.listQueue();
+    return sqsV3Service.listQueue();
   }
 
   createQueue(queueData: { queueName: string; fifoQueue?: boolean }) {
-    return sqsService.createQueue(queueData.queueName, queueData.fifoQueue);
+    return sqsV3Service.createQueue(queueData.queueName, queueData.fifoQueue);
   }
 
   deleteQueue(queueUrl: string) {
-    return sqsService.deleteQueue(queueUrl);
+    return sqsV3Service.deleteQueue(queueUrl);
   }
 
   publishMessage(
@@ -25,7 +25,7 @@ export class AwsV3SqsService {
     msgGroupId: string,
     messageData: { message: string; attributes?: Record<string, any> },
   ) {
-    return sqsService.publishMessage(
+    return sqsV3Service.publishMessage(
       queueUrl,
       msgGroupId,
       messageData.message,
@@ -34,10 +34,10 @@ export class AwsV3SqsService {
   }
 
   receiveMessage(queueUrl: string) {
-    return sqsService.receiveMessage(queueUrl);
+    return sqsV3Service.receiveMessage(queueUrl);
   }
 
   deleteMessage(queueUrl: string, receiptHandler: string) {
-    return sqsService.deleteMessage(queueUrl, receiptHandler);
+    return sqsV3Service.deleteMessage(queueUrl, receiptHandler);
   }
 }
