@@ -1,28 +1,28 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 
-import { AwsV3SqsService } from './aws-v3-sqs.service';
+import { AwsV2SqsService } from './aws-v2-sqs.service';
 
-@Controller('/v3')
-export class AwsV3SqsController {
-  constructor(private awsV3SqsService: AwsV3SqsService) {}
+@Controller('/v2')
+export class AwsV2SqsController {
+  constructor(private awsV2SqsService: AwsV2SqsService) {}
   @Get()
-  getAwsSdkVersion(): string {
-    return this.awsV3SqsService.getAwsSdkVersion();
+  getVersion(): string {
+    return this.awsV2SqsService.getAwsSdkVersion();
   }
 
-  @Get('/list')
-  getList() {
-    return this.awsV3SqsService.getQueueList();
+  @Post('/list')
+  getList(@Body() body: { queuePrefix?: string; nextToken?: string }) {
+    return this.awsV2SqsService.getQueueList(body);
   }
 
   @Post('/create')
   createQueue(@Body() body: { queueName: string; fifoQueue?: boolean }) {
-    return this.awsV3SqsService.createQueue(body);
+    return this.awsV2SqsService.createQueue(body);
   }
 
   @Post('/delete')
   deleteQueue(@Query('queueUrl') queueUrl: string) {
-    return this.awsV3SqsService.deleteQueue(queueUrl);
+    return this.awsV2SqsService.deleteQueue(queueUrl);
   }
 
   @Post('/sendMessage')
@@ -30,7 +30,7 @@ export class AwsV3SqsController {
     @Body() body: { message: string; attributes?: Record<string, any> },
     @Query() queueData: { queueUrl: string; msgGroupId: string },
   ) {
-    return this.awsV3SqsService.publishMessage(
+    return this.awsV2SqsService.publishMessage(
       queueData.queueUrl,
       queueData.msgGroupId,
       body,
@@ -39,7 +39,7 @@ export class AwsV3SqsController {
 
   @Post('/getMessage')
   getMessage(@Query('queueUrl') queueUrl: string) {
-    return this.awsV3SqsService.receiveMessage(queueUrl);
+    return this.awsV2SqsService.consumeMessage(queueUrl);
   }
 
   @Post('/deleteMessage')
@@ -47,6 +47,6 @@ export class AwsV3SqsController {
     @Query('queueUrl') queueUrl: string,
     @Body('receiptHandler') receiptHandler: string,
   ) {
-    return this.awsV3SqsService.deleteMessage(queueUrl, receiptHandler);
+    return this.awsV2SqsService.deleteMessage(queueUrl, receiptHandler);
   }
 }

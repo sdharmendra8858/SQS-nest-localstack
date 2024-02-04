@@ -19,9 +19,9 @@ import {
   SendMessageCommandOutput,
 } from '@aws-sdk/client-sqs';
 
-import { sqsConfig } from './../config';
+import { sqsConfig } from '../config';
 
-class SqsService {
+class SqsV3Service {
   private readonly client = new SQSClient({
     region: sqsConfig.REGION,
     endpoint: sqsConfig.SERVICE_ENDPOINT,
@@ -122,7 +122,7 @@ class SqsService {
         QueueUrl: queueUrl,
         AttributeNames: ['All'],
         MessageAttributeNames: ['All'],
-        MaxNumberOfMessages: 10,
+        MaxNumberOfMessages: 1,
       };
 
       const command = new ReceiveMessageCommand(input);
@@ -153,4 +153,4 @@ class SqsService {
   }
 }
 
-export const sqsService = new SqsService();
+export const sqsV3Service = new SqsV3Service();
