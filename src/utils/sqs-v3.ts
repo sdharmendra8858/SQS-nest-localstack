@@ -102,7 +102,8 @@ class SqsV3Service {
         QueueUrl: queueUrl,
         MessageBody: message,
         MessageAttributes: attributes,
-        MessageGroupId: msgGroupId,
+        ...(msgGroupId && { MessageGroupId: msgGroupId }),
+        ...(msgGroupId && { MessageDeduplicationId: Date.now().toString() }),
       };
 
       const command = new SendMessageCommand(input);

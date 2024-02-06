@@ -89,7 +89,8 @@ class SqsV2Service {
         QueueUrl: queueUrl,
         MessageBody: message,
         MessageAttributes: attributes,
-        MessageGroupId: msgGroupId,
+        ...(msgGroupId && { MessageGroupId: msgGroupId }),
+        ...(msgGroupId && { MessageDeduplicationId: Date.now().toString() }),
       };
 
       return await sqsClient.sendMessage(params).promise();
