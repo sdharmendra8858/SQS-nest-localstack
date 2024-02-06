@@ -12,6 +12,6 @@ export const sqsConfig = {
 // queues that we created in the SQS
 export const topics = {
   STANDARD:
-    'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/new-standard-Queu',
+    'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/new-standard-Queue',
   FIFO: 'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/new-fifo-Queue.fifo',
 };
