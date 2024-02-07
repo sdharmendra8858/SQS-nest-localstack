@@ -1,73 +1,48 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Name
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+SQS-NEST-LOCALSTASH
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This repository is for creating the connection with the SQS and NestJs. We are running the **SQS** on the local setup using the **localstash**. We are creating the complete running nest application and also a worker standalone application for running the task which are seperate from the existing functionality of the application like **CRON** job, a **CONSUMER**, etc on specific part or module of the application.
+
+This implementation contains the v2 and v3 of the **aws-sdk** and also the consumer is written in v2, v3 and also a external module like **sqs-consumer**.
 
 ## Installation
 
-```bash
-$ npm install
-```
+1. To run the complete application execute the given command
 
-## Running the app
+   ```bash
+   npm run start
+   ```
 
-```bash
-# development
-$ npm run start
+2. To run the localstash and setup the sqs locally execute
 
-# watch mode
-$ npm run start:dev
+   ```bash
+   docker compose up
+   ```
 
-# production mode
-$ npm run start:prod
-```
+3. Create the queue using the api cURL
 
-## Test
+   ```bash
+   curl --location 'http://localhost:3000/v2/create' \
+   --header 'Content-Type: application/json' \
+   --data '{
+       "queueName": "new-standard-Queue"
+   }'
+   ```
 
-```bash
-# unit tests
-$ npm run test
+   **_NOTE ::_** As of the queue names are hardcoded but can be changed in the config directory of the application
 
-# e2e tests
-$ npm run test:e2e
+4. To run the worker
 
-# test coverage
-$ npm run test:cov
-```
+   ```bash
+   node dist/worker.js
+   ```
 
-## Support
+## Contributing
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Please make sure to update tests as appropriate.
