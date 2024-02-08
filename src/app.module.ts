@@ -12,3 +12,8 @@ import { HealthModule } from './modules/health/health.module';
   providers: [AppService],
 })
 export class AppModule {}
+
+@Module({
+  imports: [HealthModule],
+})
+export class WorkerModule {}
