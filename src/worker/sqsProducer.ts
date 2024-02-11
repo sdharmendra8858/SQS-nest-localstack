@@ -38,12 +38,10 @@ export class SqsConnection {
       console.log(
         `Sending the message with : ${data.message}, ${JSON.stringify(data.attributes)}`,
       );
-      await createSqsQueueIfNotExist();
       const queueUrl = getQueueUrlFromQueueName(
         data.queueName,
         !!data.msgGroupId,
       );
-      // const queueUrl = `${sqsConfig.URL_STRUCT}/${data.queueName}${data.msgGroupId ? '.fifo' : ''}`;
       console.log(`Sending message in queueUrl : ${queueUrl}`);
       const params: SQS.Types.SendMessageRequest = {
         QueueUrl: queueUrl,
@@ -60,8 +58,13 @@ export class SqsConnection {
       }
       return await this.sqsClient.sendMessage(params).promise();
     } catch (err) {
-      console.error('Error while sending the message');
-      return err;
+      console.error('Error while sending the message', err);
+      if (err.name === 'QueueDoesNotExist') {
+        await createSqsQueueIfNotExist();
+        return this.publishEvent(data);
+      } else {
+        return err;
+      }
     }
   }
 }

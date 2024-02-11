@@ -3,6 +3,7 @@ import { Consumer } from 'sqs-consumer';
 
 import { sqsConfig } from '../../config';
 import { SqsV2Service } from '../../utils/sqs/sqs-v2';
+import { createSqsQueueIfNotExist } from '../../utils';
 
 export default abstract class SqsConsumer {
   private connection: SQS;
@@ -30,11 +31,18 @@ export default abstract class SqsConsumer {
     );
   }
 
+  private handleError(err) {
+    console.error('Error in SQS events -> ', err);
+    if (err['code'] === 'AWS.SimpleQueueService.NonExistentQueue') {
+      createSqsQueueIfNotExist();
+    }
+  }
+
   public async subscribe(subscribeConfig) {
     const {
       queueUrl,
-      AttributeNames,
-      MaxNumberOfMessages,
+      attributeNames,
+      maxNumberOfMessages,
       visibilityTimeout,
       waitTimeSec,
     } = subscribeConfig;
@@ -44,7 +52,7 @@ export default abstract class SqsConsumer {
     }
 
     if (!queueUrl) {
-      throw new Error('Queue not found');
+      throw new Error('Please provide Queue to process the events');
     }
 
     try {
@@ -52,20 +60,23 @@ export default abstract class SqsConsumer {
 
       const consumer = Consumer.create({
         queueUrl: queueUrl,
+        attributeNames,
+        visibilityTimeout,
+        waitTimeSeconds: waitTimeSec,
         handleMessage: this.handleMessage,
         sqs: this.connection,
       });
 
       consumer.on('error', (err) => {
-        console.error(err.message);
+        this.handleError(err);
       });
 
       consumer.on('processing_error', (err) => {
-        console.error(err.message);
+        this.handleError(err);
       });
 
       consumer.on('timeout_error', (err) => {
-        console.error(err.message);
+        this.handleError(err);
       });
 
       consumer.start();
