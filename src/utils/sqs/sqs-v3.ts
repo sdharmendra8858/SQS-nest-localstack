@@ -19,7 +19,7 @@ import {
   SendMessageCommandOutput,
 } from '@aws-sdk/client-sqs';
 
-import { sqsConfig } from '../config';
+import { sqsConfig } from '../../config';
 
 class SqsV3Service {
   private readonly client = new SQSClient({
@@ -33,7 +33,7 @@ class SqsV3Service {
 
   public async listQueue(): Promise<ListQueuesCommandOutput> {
     try {
-      console.log('Listing the queues in the SQS');
+      console.log('Listing the queues in the SQS v3');
 
       const input: ListQueuesCommandInput = {
         MaxResults: 10,

@@ -1,7 +1,8 @@
 import * as AWS from 'aws-sdk';
 import { Consumer } from 'sqs-consumer';
 
-import { sqsConfig, topics } from '../config';
+import { sqsConfig } from '../../config';
+import { SQS_PUBLISHING_QUEUE } from '../../constant';
 
 const sqs = new AWS.SQS({
   accessKeyId: sqsConfig.IAM.ACCESS_KEY_ID,
@@ -11,7 +12,7 @@ const sqs = new AWS.SQS({
   apiVersion: '2012-11-05',
 });
 
-var queueUrl = topics.STANDARD;
+const queueUrl = SQS_PUBLISHING_QUEUE.STANDARD.STANDARD_QUEUE_ONE;
 
 const createConsumer = Consumer.create({
   queueUrl: queueUrl,

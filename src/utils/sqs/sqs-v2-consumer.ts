@@ -1,7 +1,8 @@
 import * as AWS from 'aws-sdk';
 
-import { sqsConfig, topics } from '../config';
-import { sqsV2Service } from './sqs-v2';
+import { sqsConfig } from '../../config';
+import { SqsV2Service } from './sqs-v2';
+import { SQS_PUBLISHING_QUEUE } from 'src/constant';
 
 AWS.config.update({
   region: sqsConfig.REGION,
@@ -10,7 +11,8 @@ AWS.config.update({
 });
 
 const sqs = new AWS.SQS({});
-const queueUrl = topics.STANDARD;
+const queueUrl = SQS_PUBLISHING_QUEUE.STANDARD.STANDARD_QUEUE_ONE;
+const sqsV2Service = SqsV2Service.getInstance();
 
 // function to validate if the queue exist or not
 async function validateQueueUrl() {

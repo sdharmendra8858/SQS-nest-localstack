@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
 import { AwsV2SqsService } from './aws-v2-sqs.service';
 
@@ -15,6 +15,11 @@ export class AwsV2SqsController {
     return this.awsV2SqsService.getQueueList(body);
   }
 
+  @Get('/queueUrl/:queueUrl')
+  getQueueUrl(@Param('queueUrl') queueUrl: string) {
+    return this.awsV2SqsService.getQueueUrl(queueUrl);
+  }
+
   @Post('/create')
   createQueue(@Body() body: { queueName: string; fifoQueue?: boolean }) {
     return this.awsV2SqsService.createQueue(body);
@@ -28,13 +33,9 @@ export class AwsV2SqsController {
   @Post('/sendMessage')
   publishMessage(
     @Body() body: { message: string; attributes?: Record<string, any> },
-    @Query() queueData: { queueUrl: string; msgGroupId: string },
+    @Query() queueData: { msgGroupId: string },
   ) {
-    return this.awsV2SqsService.publishMessage(
-      queueData.queueUrl,
-      queueData.msgGroupId,
-      body,
-    );
+    return this.awsV2SqsService.publishMessage(queueData.msgGroupId, body);
   }
 
   @Post('/getMessage')

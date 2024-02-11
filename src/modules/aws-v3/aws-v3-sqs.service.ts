@@ -5,7 +5,7 @@ import { sqsV3Service } from 'src/utils';
 @Injectable()
 export class AwsV3SqsService {
   getAwsSdkVersion(): string {
-    return 'Aws SDK version v3';
+    return 'Aws SDK javascript version v3';
   }
 
   getQueueList() {
