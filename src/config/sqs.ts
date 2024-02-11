@@ -7,11 +7,6 @@ export const sqsConfig = {
     SECRET_ACCESS_KEY: 'na',
   },
   SERVICE_ENDPOINT: 'http://127.0.0.1:4566',
-};
-
-// queues that we created in the SQS
-export const topics = {
-  STANDARD:
-    'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/new-standard-Queue',
-  FIFO: 'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/new-fifo-Queue.fifo',
+  URL_STRUCT:
+    'http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000',
 };

@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import expressListRoutes from 'express-list-routes';
 
 import { AppModule, WorkerModule } from './app.module';
+import { startSqsWorker } from './worker/sqs';
+import { createSqsQueueIfNotExist } from './utils';
 
 const moduleName = process.argv[2];
 
@@ -11,7 +13,8 @@ async function bootstrap(moduleName: string) {
   if (moduleName === 'worker') {
     app = await NestFactory.create(WorkerModule);
     const worker = await NestFactory.createApplicationContext(AppModule);
-    require('./utils/sqs-v2-consumer-external');
+    await createSqsQueueIfNotExist();
+    await startSqsWorker();
     worker.close().catch((err) => {
       console.error(err);
       process.exit(1);
